@@ -11,7 +11,17 @@
 //CPP_UTILITIES.CPP
 
 #include <stdio.h>
+#include <cstdlib>
 #include "cpp_utilities.hpp"
+#include <ctime>
+#ifdef __MINGW32__
+  #include <windows.h>
+#elif __APPLE__
+  #include "TargetConditionals.h"
+  #if TARGET_OS_MAC
+  #endif
+#elif __linux__
+#endif
 
 string Utilities::make_upper_case(string theString) {
 

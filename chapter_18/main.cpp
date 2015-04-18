@@ -10,15 +10,35 @@
 
 //MAIN.CPP
 
+
 #include <iostream>
 #include <stdio.h>
 #include <cstdio>
+#include <string>
 #include "Employee.hpp"
 #include "Production_worker.hpp"
 #include "Shift_supervisor.hpp"
 #include "Team_leader.hpp"
 #include "Linked_list.hpp"
 #include "cpp_utilities.hpp"
+
+//Patch for the to_string function when running Windows
+#ifdef __MINGW32__
+
+#include <cstdlib>
+#include <windows.h>
+#include <sstream>
+
+namespace patch
+{
+    template < typename T > std::string to_string( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
+}
+#endif
 
 Employee *get_new_employee(Linked_list<Employee> *emp_list);
 string menu_select();
@@ -108,9 +128,17 @@ int main(int argc, const char *argv[]) {
         cout << "Set List Position Selected\n\n";
 
         int num_emp = emp_list.get_num_nodes();
-        //Strings notify user what the head, tail and current nodes are.
-        string emp_from_current = to_string(emp_list.nodes_from_current() + 1);
+        string emp_from_current;
+        string num_emp_string;
         string prompt;
+
+        #ifdef __MINGW32__
+          emp_from_current = patch::to_string(emp_list.nodes_from_current() + 1);
+          num_emp_string = patch::to_string(num_emp);
+        #elif __APPLE__
+          num_emp_string = to_string(num_emp);
+          emp_from_current = to_string(emp_list.nodes_from_current() + 1);
+        #endif
 
         if (num_emp == 0) {
           cout << num_emp << " employees in list.\n";
@@ -118,7 +146,7 @@ int main(int argc, const char *argv[]) {
 
         else {
           cout << num_emp << " employees in list.\n";
-          prompt = "Please enter the list position you would like to go to\n(note: 1 = head of list, " + to_string(num_emp) + " = tail of list\n" + "Current Position: " + emp_from_current;
+          prompt = "Please enter the list position you would like to go to\n(note: 1 = head of list, " + num_emp_string + " = tail of list\n" + "Current Position: " + emp_from_current;
           emp_list.set_current_position(Utilities::input_int(prompt, 1, num_emp, -999));
         }
       }
@@ -168,7 +196,6 @@ int main(int argc, const char *argv[]) {
       }
 
       else if (user_input == "Q") {
-        cout << "Good Bye!\n\n";
         exit_flag = false;
       }
 
@@ -176,6 +203,13 @@ int main(int argc, const char *argv[]) {
         cout << "Invalid Selection, please select a bracketed character from the menu above.\n";
       }
     }
+    #ifdef __MINGW32__
+      cout << "Bye Bye from Windows\n\n";
+    #elif __APPLE__
+      cout << "Good Bye from the Mac!\n\n";
+    #elif __linux__
+      cout << "Bye Bye from Linux\n\n";
+    #endif
     return 0;
   }
 }
