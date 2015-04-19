@@ -1,12 +1,12 @@
-//* * * * * * * * * * * * * * * * * * * * * * * * *
-//Project Name: Chapter 17 Assignment             *
-//Project Description: Linked List implementation *
-//Project Author: Wishart, Brent                  *
-//Is this an extra credit Project: No             *
-//Date completed: 04/09/2015                      *
-//Operating system used: OSx 10.10.2              *
-//IDE Used: Vi and terminal                       *
-//* * * * * * * * * * * * * * * * * * * * * * * * *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * *
+//Project Name: Chapter 17/18 Assignment                *
+//Project Description: MultiOperating System Compiling  *
+//Project Author: Wishart, Brent                        *
+//Is this an extra credit Project: Yes                  *
+//Date completed: 04/19/2015                            *
+//Operating system used: OSx 10.10.3                    *
+//IDE Used: Vi and terminal                             *
+//* * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 //TEAM_LEADER.CPP
 
