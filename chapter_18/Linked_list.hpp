@@ -21,6 +21,8 @@ using namespace std;
 template <class T>
 class Linked_list {
   private:
+    int max_size;
+    int current_size;
     struct node {
       T *data;
       node *prev;
@@ -32,6 +34,7 @@ class Linked_list {
 
   public:
     Linked_list();
+    Linked_list(int size);
     ~Linked_list();
     T *get_current_data();
     void reset_current();
@@ -45,6 +48,11 @@ class Linked_list {
     bool forward();
     int get_num_nodes();
     int nodes_from_current();
+    bool push_que(T *data);
+    bool push_stack(T *data);
+    bool pop_que(T *data);
+    bool pop_stack(T *data);
+    bool is_full();
 };
 
 /* * * * * * * * * * * * * * * * * * * * * * *
@@ -53,6 +61,18 @@ Sets head, tail and current to NULL          *
 * * * * * * * * * * * * * * * * * * * * * * */
 template <class T>
 Linked_list<T>::Linked_list() {
+  head = NULL;
+  tail = NULL;
+  current = NULL;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * *
+Constructor                                  *
+Sets SIZE, head, tail and current to NULL    *
+* * * * * * * * * * * * * * * * * * * * * * */
+template <class T>
+Linked_list<T>::Linked_list(int que_stack_size) {
+  max_size = que_stack_size;
   head = NULL;
   tail = NULL;
   current = NULL;
@@ -280,7 +300,7 @@ void Linked_list<T>::print_all(void (*print)(T*)) {
 
   else {
     while (position_node != NULL) {
-      print(position_node->data); 
+      print(position_node->data);
       position_node = position_node->next;
     }
   }
@@ -357,5 +377,67 @@ int Linked_list<T>::nodes_from_current() {
   }
 
   return c;
+}
+
+template <class T>
+bool Linked_list<T>::push_que(T *data) {
+  if (is_full()) {
+    return false;
+  }
+  else {
+    current = head;
+    insert(data);
+    current_size++;
+    return true;
+  }
+}
+
+template <class T>
+bool Linked_list<T>::push_stack(T *data) {
+  if (is_full()) {
+    return false;
+  }
+  else {
+    current = head;
+    insert(data);
+    current_size++;
+    return true;
+  }
+}
+
+template <class T>
+bool Linked_list<T>::pop_que(T *data) {
+  if (current_size > 0) {
+    current = head;
+    remove(data);
+    current_size--;
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+template <class T>
+bool Linked_list<T>::pop_stack(T *data) {
+  if (current_size > 0) {
+    current = tail;
+    remove(data);
+    current_size--;
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+template <class T>
+bool Linked_list<T>::is_full() {
+  if (current_size == max_size) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
 #endif

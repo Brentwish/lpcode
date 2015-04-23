@@ -33,11 +33,13 @@ int main(int argc, const char *argv[]) {
     cout << "\n";
   }
   if (argc != 2) {
-    cout << "ERROR:\nInvalid number of arguments, 1 argument required for Stack/Que size.\n";
+    cout << "ERROR:\nInvalid number of arguments\n1 argument required for Stack/Que size.\n";
     return 0;
   }
   else {
+    const int SIZE = atoi(argv[1]);
     Linked_list<Employee> emp_list;
+    Linked_list<Employee> que_stack(SIZE);
     Employee *emp;
     string user_input = "";
     bool exit_flag = true;
@@ -54,6 +56,51 @@ int main(int argc, const char *argv[]) {
         emp_list.set_current_position(current);
         cout << "Employee appended\n";
         cout << emp_list.get_num_nodes() << " employees in list.\n";
+      }
+
+      else if (user_input == "U") {
+        cout << "Push Employee to Que Selected\n\n";
+        emp = get_new_employee(&que_stack);
+        if (!que_stack.push_que(emp)) {
+          cout << "Que/Stack is full\nEmployee discarded\n";
+        }
+      }
+
+      else if (user_input == "O") {
+        cout << "Pop Employee from Que Selected\n\n";
+        que_stack.reset_current(); 
+        while(true) {
+          if (que_stack.get_num_nodes() == 0) {
+            cout << "Nothing to pop\n";
+            break;
+          }
+          else {
+            if (!que_stack.forward()) {
+              que_stack.pop_que(que_stack.get_current_data());
+              break;
+            }
+            else {}
+          } //else
+        } //while
+      }
+
+      else if (user_input == "H") {
+        cout << "Push Employee to Stack Selected\n\n";
+        emp = get_new_employee(&que_stack);
+        if (!que_stack.push_stack(emp)) {
+          cout << "Que/Stack is full\nEmployee discarded\n";
+        }
+      }
+
+      else if (user_input == "K") {
+        cout << "Pop Employee from Stack Selected\n\n";
+        if (que_stack.get_num_nodes() == 0) {
+          cout << "Nothing to pop\n";
+        }
+        else {
+          que_stack.reset_current(); 
+          que_stack.pop_stack(que_stack.get_current_data());
+        }
       }
 
       else if (user_input == "I") {
@@ -155,12 +202,33 @@ int main(int argc, const char *argv[]) {
 
       else if (user_input == "P") {
         cout << "Print Current Employee Selected\n\n";
-        emp_list.print_current(&print_emp);
+
+        int selection;
+        cout << "Which list would you like to print?\n";
+        cout << "1) Normal Linked List\n";
+        cout << "2) Que/Stack List\n";
+        selection = Utilities::input_int("", 1, 2, -999);
+        if (selection == 1) {
+          emp_list.print_current(&print_emp);
+        }
+        else {
+          que_stack.print_current(&print_emp);
+        }
       }
 
       else if (user_input == "L") {
         cout << "Print List Selected\n\n";
-        emp_list.print_all(&print_emp);
+        int selection;
+        cout << "Which list would you like to print?\n";
+        cout << "1) Normal Linked List\n";
+        cout << "2) Que/Stack List\n";
+        selection = Utilities::input_int("", 1, 2, -999);
+        if (selection == 1) {
+          emp_list.print_all(&print_emp);
+        }
+        else {
+          que_stack.print_all(&print_emp);
+        }
       }
 
       else if (user_input == "M") {
@@ -331,6 +399,10 @@ Employee *get_new_employee(Linked_list<Employee> *emp_list) {
 
 void print_menu() {
   cout << "* * * * * * * * * * * * * * * * * * * *" << endl;
+  cout << "*  P<u>sh Que                         *" << endl;
+  cout << "*  P<o>p Que                          *" << endl;
+  cout << "*  Pus<h> Stack                       *" << endl;
+  cout << "*  Pop Stac<k>                        *" << endl;
   cout << "*  <A>ppend an employee to the list   *" << endl;
   cout << "*  <I>nsert an employee in the list   *" << endl;
   cout << "*  <R>emove an employee in the list   *" << endl;
