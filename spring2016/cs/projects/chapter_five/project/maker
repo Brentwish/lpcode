@@ -1,0 +1,5 @@
+#!/bin/bash
+rm $1.o
+rm $1.lst
+nasm -g -f elf32 $1.asm -l $1.lst
+ld -melf_i386 -o $1 $1.o
